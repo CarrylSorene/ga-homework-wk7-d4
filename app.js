@@ -42,9 +42,23 @@ app.get("/foods", function (req, res) {
 //CREATE
 app.post("/foods", function (req, res) {
   console.log("hitting post to create foods")
-  var newfood = req.body
-  res.json(newfood)
-  foods.push(newfood)
+  var comparator = 0;
+  var highestId;
+  for (var  i = 0; i < foods.length -1; i++) {
+    if (foods[i].id > comparator) {
+      highestId = foods[i].id
+      comparator = foods[i].id
+      console.log(highestId)
+    }
+  }
+
+  newId = highestId + 1
+
+  newFood = req.body
+  newFood.id = newId
+  foods.push(newFood);
+  res.json(newFood);
+
   // add a unique id
   // add new food to DB (array, really...)
   // send a response with newly created object
@@ -53,6 +67,15 @@ app.post("/foods", function (req, res) {
 //DELETE
 app.delete("/foods/:id", function (req, res) {
   console.log("hitting delete route");
+var position
+for (var  i = 0; i < foods.length -1; i++) {
+  foods[i].id.toString() === req.params.id ? position = i : position //if this is true, set position to i. params is id passed toString.
+  console.log(foods[i])
+}
+
+res.json(foods[position])
+foods.splice(position, 1)
+
   // finding an object with id = req.body.id out of the foods
   // remove item from array
   // render deleted object
